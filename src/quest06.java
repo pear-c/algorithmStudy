@@ -4,7 +4,6 @@ public class quest06 {
     private static int[] solution(int N, int[] stages){
         int user = stages.length; // 유저 수
 
-
         int[] failStage = new int[N+1]; // 현재 스테이지 당 유저 수
         for(int i=0; i<user; i++){
             failStage[stages[i]-1]++;

@@ -1,3 +1,5 @@
+package Ebook;
+
 import java.util.*;
 
 public class quest06 {

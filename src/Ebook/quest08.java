@@ -1,6 +1,6 @@
+package Ebook;
+
 import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
 
 public class quest08 {
     private static boolean solution(String s){

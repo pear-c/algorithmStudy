@@ -19,11 +19,15 @@ public class B_1620 {
 
         // key : 포켓몬, value : 도감번호
         HashMap<String, Integer> map = new HashMap<>();
+        // 도감번호 -> 포켓몬 접근용 배열
+        String[] arr = new String[N+1];
+
 
         // 포켓몬 입력
         for(int i=1; i<=N; i++){
             String pokemon = br.readLine();
             map.put(pokemon, i);
+            arr[i] = pokemon;
         }
 
         // 풀어야 할 문제 (입력 : 포켓몬 -> 도감번호 / 도감번호 -> 포켓몬)
@@ -31,12 +35,7 @@ public class B_1620 {
             String prob = br.readLine();
             if(prob.charAt(0) >= '0' && prob.charAt(0) <= '9') {
                 int do_num = Integer.parseInt(prob);
-                // HashMap에서 Value로 Key값 접근 위함
-                for(HashMap.Entry<String, Integer> entry : map.entrySet()){
-                    if(entry.getValue() == do_num){
-                        System.out.println(entry.getKey());
-                    }
-                }
+                System.out.println(arr[do_num]);
             }
             else {
                 System.out.println(map.get(prob));

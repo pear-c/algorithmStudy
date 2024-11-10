@@ -9,7 +9,6 @@ import java.util.StringTokenizer;
 public class B_18258 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
 
         // 저장할 큐
@@ -21,12 +20,13 @@ public class B_18258 {
             String command = br.readLine();
 
             // #1. push (기존의 StringTokenizer 방법에서 변경)
-            if(command.contains("push")){
+            if(command.contains("push")){ // contains 내부 로직(String 전체 선회)
                 int num = Integer.parseInt(command.split(" ")[1]);
                 q.add(num);
             }
             else {
                 switch (command) {
+                    // # if문으로 처음에
                     // #2. pop
                     case "pop":
                         sb.append(q.isEmpty() ? "-1" : q.poll()).append("\n");
@@ -54,10 +54,6 @@ public class B_18258 {
                 }
             }
         }
-        bw.write(sb.toString());
-        bw.flush();
-
-        bw.close();
-        br.close();
+        System.out.println(sb);
     }
 }

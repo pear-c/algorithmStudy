@@ -14,21 +14,21 @@ public class B_5374 {
         while(n-- > 0) {
             String[] line = br.readLine().split(" ");
             // 조건 보고 int -> long 변경 (100만)
-            long a = Integer.parseInt(line[0]);
-            long b = Integer.parseInt(line[1]);
+            int a = Integer.parseInt(line[0]);
+            int b = Integer.parseInt(line[1]);
 
             System.out.println(lcm(a,b));
         }
     }
 
     // GCD, 최대공약수
-    public static long gcd(long a, long b) {
+    public static long gcd(int a, int b) {
         if(b == 0)
             return a;
         return gcd(b, a % b);
     }
     // LCM, 최소공배수
-    public static long lcm(long a, long b) {
-        return a * b / gcd(a, b);
+    public static long lcm(int a, int b) {
+        return (long)a * b / gcd(a, b);
     }
 }

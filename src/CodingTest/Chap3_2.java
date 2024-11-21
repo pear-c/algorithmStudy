@@ -20,13 +20,26 @@ public class Chap3_2 {
             arr[i] = Integer.parseInt(st.nextToken());
         }
         Arrays.sort(arr);
-        int sum = 0;
-        for(int i=1; i<=M; i++) {
-            if(i % K == 0)
-                sum += arr[N-2];
-            else
-                sum += arr[N-1];
-        }
-        System.out.println(sum);
+//        // 방법 1.
+//        int sum = 0;
+//        for(int i=1; i<=M; i++) {
+//            if(i % K == 0)
+//                sum += arr[N-2];
+//            else
+//                sum += arr[N-1];
+//        }
+//        System.out.println(sum);
+        int first = arr[N-1];   // 가장 큰 수
+        int second = arr[N-2];  // 두번째 큰 수
+
+        // 가장 큰 수가 더해지는 횟수 계산
+        int count = (M / (K+1)) * K;
+        count += M % (K+1);
+
+        int result = 0;
+        result += count * first; // 가장 큰 수 더하기
+        result += (M - count) * second;     // 두 번째로 큰 수 더하기
+
+        System.out.println(result);
     }
 }

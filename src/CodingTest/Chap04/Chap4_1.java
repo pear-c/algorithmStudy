@@ -1,4 +1,4 @@
-package CodingTest;
+package CodingTest.Chap04;
 
 import java.io.BufferedReader;
 import java.io.IOException;

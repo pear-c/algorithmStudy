@@ -1,4 +1,4 @@
-package CodingTest;
+package CodingTest.Chap05;
 
 import java.util.Deque;
 import java.util.LinkedList;

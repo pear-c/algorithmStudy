@@ -7,34 +7,38 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class B_18511 {
+    static int n, k, max;
+    static int[] arr;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        // N, K 입력
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
 
-        int[] arr = new int[k];
+        // K원소 배열
+        arr = new int[k];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < k; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-
+        // K원소 배열 정렬
         Arrays.sort(arr);
 
-        String s = n+"";
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<s.length(); i++) {
-            int num = (int)(s.charAt(i) - '0');
+        max = 0;
+        dfs(0);
+        System.out.println(max);
+    }
 
-            for(int j=k-1; j>=0; j--) {
-                if(arr[j] == num)
-                    sb.append(arr[j]);
-                else if(arr[j] < num) {
-                    sb.append(arr[j]);
-                }
-            }
+    static void dfs(int num) {
+        // num이 n보다 크면 리턴(스택에서 제거)
+        if(num > n) return;
 
+        max = Math.max(max, num);
 
+        for(int i=0; i<k; i++) {
+            dfs(Integer.parseInt(num+"" + arr[i]+""));
         }
     }
 }

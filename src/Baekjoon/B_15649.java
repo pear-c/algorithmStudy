@@ -21,6 +21,7 @@ public class B_15649 {
     }
 
     static void dfs(int num) {
+        // 문자열 크기가 M이랑 같으면 재귀 종료
         if(sb.length() == M) {
             // 숫자 사이 공백 추가
             for(int i=0; i<sb.length(); i++)

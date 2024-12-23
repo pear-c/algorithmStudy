@@ -3,63 +3,80 @@ package Baekjoon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class B_4396 {
-    static int N;
-    static char[][] bombmap, openMap;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        // N 입력
-        N = Integer.parseInt(br.readLine());
-        bombmap = new char[N][N];
-        // 지뢰 그래프 초기화
-        for(int i=0; i<N; i++) {
-            String inputLine = br.readLine();
-            for(int j=0; j<N; j++) {
-                bombmap[i][j] = inputLine.charAt(j);
+        // 입력
+        int n = Integer.parseInt(br.readLine());
+        char[][] bombMap = new char[n][n];
+        char[][] opendMap = new char[n][n];
+        boolean checkBomb = false;
+        // 지뢰 필드 입력
+        for(int i=0; i<n; i++) {
+            String s = br.readLine();
+            for(int j=0; j<n; j++) {
+                bombMap[i][j] = s.charAt(j);
             }
         }
-        openMap = new char[N][N];
-        for(int i=0; i<N; i++) {
-            String inputLine = br.readLine();
-            for(int j=0; j<N; j++) {
-                openMap[i][j] = inputLine.charAt(j);
+        // 오픈된 필드 입력
+        for(int i=0; i<n; i++) {
+            String s = br.readLine();
+            for(int j=0; j<n; j++) {
+                opendMap[i][j] = s.charAt(j);
             }
         }
 
-        char[][] result = new char[N][N];
-        for(int i=0; i<N; i++) {
-            for(int j=0; j<N; j++) {
-                if(openMap[i][j] == 'x')
-                    result[i][j] = (char)(checkBomb(i, j) + '0');
+        char[][] result = new char[n][n];
+        for(int i=0; i<n; i++)
+            Arrays.fill(result[i], ' ');
+
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<n; j++) {
+                if(opendMap[i][j] == 'x') {
+                    if(bombMap[i][j] == '*')
+                        checkBomb = true;
+                    else
+                        result[i][j] = (char)(countBomb(bombMap, i, j) + '0');
+                }
                 else
                     result[i][j] = '.';
             }
         }
 
-        for(int i=0; i<N; i++) {
-            for(int j=0; j<N; j++) {
+        // 지뢰 터졌으면 모든 지뢰 표시
+        if(checkBomb) {
+            for(int i=0; i<n; i++) {
+                for(int j=0; j<n; j++) {
+                    if(bombMap[i][j] == '*')
+                        result[i][j] = '*';
+                }
+            }
+        }
+
+        // 결과 출력
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<n; j++) {
                 System.out.print(result[i][j]);
             }
             System.out.println();
         }
     }
 
-    static int checkBomb(int a, int b) {
+    static int countBomb(char[][] bombMap, int x, int y) {
+        int[] dx = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int[] dy = {-1, 0, 1, -1, 1, -1, 0, 1};
         int count = 0;
-        // 상,하,좌,우
-        if(a-1 >= 0 && bombmap[a-1][b] == '*') count++;
-        if(a+1 < N  && bombmap[a+1][b] == '*') count++;
-        if(b-1 >= 0 && bombmap[a][b-1] == '*') count++;
-        if(b+1 < N  && bombmap[a][b+1] == '*') count++;
-        // 대각선
-        if(a-1 >= 0 && b+1 < N && bombmap[a-1][b+1] == '*') count++;
-        if(a+1 < N && b+1 < N  && bombmap[a+1][b+1] == '*') count++;
-        if(a+1 < N && b-1 >= 0 && bombmap[a+1][b-1] == '*') count++;
-        if(a-1 >= 0 && b-1 >= 0 && bombmap[a-1][b-1] == '*') count++;
 
+        for(int i=0; i<8; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if(nx >= 0 && ny >= 0 && nx < bombMap.length && ny < bombMap.length && bombMap[nx][ny] == '*')
+                count++;
+        }
         return count;
     }
 }

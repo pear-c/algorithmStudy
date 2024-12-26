@@ -1,121 +1,77 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Solution3 {
-    static class Member {
-        private int id;
-        private String name;
-        private boolean alarm;
-        private ArrayList<Integer> commentArticles = new ArrayList<>();
-
-        public Member(int id, String name) {
-            this.id = id;
-            this.name = name;
-            this.alarm = true;
-        }
-
-        public int getId() {
-            return id;
-        }
-        public String getName() {
-            return name;
-        }
-        public boolean isAlarm() {
-            return alarm;
-        }
-        public void setId(int id) {
-            this.id = id;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
-        public void setAlarm(boolean alarm) {
-            this.alarm = alarm;
-        }
-    }
-
-    static class Article {
-        private int articleId;
-        private String comment;
-        private ArrayList<Integer> commentIds = new ArrayList<>();
-
-        public Article(int articleId) {
-            this.articleId = articleId;
-        }
-
-        public int getArticleId() {
-            return articleId;
-        }
-        public void setArticleId(int articleId) {
-            this.articleId = articleId;
-        }
-    }
-
-    static Member find(Member[] members, String name) {
-        for(Member member : members) {
-            if(member.getName().equals(name)) {
-                return member;
-            }
-        }
-        return null;
-    }
-    // 게시물 생성되면 본인 제외 다른사람들에게 알람
-    static void createArticle(Member[] members, String name, int[] answer) {
-        for(Member member : members) {
-            if(member.getName().equals(name)) {
-                Article article = new Article(member.getId());
-            }
-            else if(!member.getName().equals(name) && member.isAlarm()) {
-                answer[member.getId()]++;
-            }
-        }
-    }
-
-    static void createComment(Member[] members, String name) {
-
-    }
-
-
     public static int[] solution(String[] Members, String[][] Logs) {
         int[] answer = new int[Members.length];
+        boolean[] alarmStatus = new boolean[Members.length];
 
-        Member[] members = new Member[Members.length];
-        for(int i=0; i<Members.length; i++) {
-            members[i] = new Member(i, Members[i]);
+        // 초기값 알람은 모두 켜짐 상태
+        for(int i=0; i<alarmStatus.length; i++) {
+            alarmStatus[i] = true;
         }
 
-        for(int i=0; i<Logs.length; i++) {
-            String[] inputs = Logs[i];
+        // 멤버 이름, 인덱스 매핑
+        HashMap<String, Integer> map = new HashMap<>();
+        for(int i=0; i<Members.length; i++) {
+            map.put(Members[i], i);
+        }
+        // 게시글 작성자 저장 리스트
+        ArrayList<String> articleAuthors = new ArrayList<>();
 
-            String name = inputs[0];
-            String command = inputs[1];
-            Member member = find(members, name);
+        // 로그 처리
+        for(String[] log : Logs) {
+            String member = log[0];
+            String action = log[1];
+            int memberIdx = map.get(member);
 
-            switch(command) {
-                case "ALARM":
-                    if(member.isAlarm()) {
-                        member.setAlarm(false);
+            if(action.equals("ARTICLE")) {
+                // 게시글 등록
+                articleAuthors.add(member); // 해당 게시글 작성자 저장
+                // 게시글 작성한 멤버 제외 모두에게 알람 전송
+                for(int i=0; i<Members.length; i++) {
+                    if(i != memberIdx && alarmStatus[i]) {
+                        answer[i]++;
                     }
-                    else
-                        member.setAlarm(true);
-                    break;
+                }
+            }
+            else if(action.equals("ALARM")) {
+                // 알람 상태 변경
+                alarmStatus[memberIdx] = !alarmStatus[memberIdx];
+            }
+            else if(action.equals("COMMENT")) {
+                // 댓글 처리
+                int articleIdx = Integer.parseInt(log[2]);
+                String articleAuthor = articleAuthors.get(articleIdx);
 
-                case "ARTICLE":
-                    createArticle(members, name, answer);
-                    break;
+                // 댓글 단 멤버는 본인 게시글에 댓글 달수 없음
+                if(!member.equals(articleAuthor)) {
+                    // 게시글 작성자에게 알람 보냄
+                    if(alarmStatus[map.get(articleAuthor)]) {
+                        answer[map.get(articleAuthor)]++;
+                    }
+                    int articleAuthorIdx = map.get(articleAuthor);
+                    if(alarmStatus[articleAuthorIdx]) {
+                        answer[articleAuthorIdx]++;
+                    }
+                }
             }
         }
         return answer;
     }
-
     public static void main(String[] args) {
         String[] Members = {"A", "B", "C"};
-        String[][] Logs = {{"A", "ARTICLE"},
+        String[][] Logs = {
+                {"A", "ARTICLE"},
                 {"A", "ALARM"},
                 {"B", "ARTICLE"},
                 {"C", "ALARM"},
-                {"B", "ARTICLE"}
+                {"B", "ARTICLE"},
+                {"B", "COMMENT", "0"},
+                {"C", "COMMENT", "1"}
         };
+
         int[] answer = solution(Members, Logs);
         System.out.println(Arrays.toString(answer));
     }

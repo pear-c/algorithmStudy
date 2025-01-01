@@ -19,7 +19,6 @@ public class Chap10_3 {
             parent[b] = a;
         else
             parent[a] = b;
-
     }
 
     public static void main(String[] args) throws Exception {

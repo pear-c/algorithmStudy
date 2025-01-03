@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Solution2 {
 
@@ -15,6 +14,8 @@ public class Solution2 {
             int y = s[1];
             ladder[y][x] = true;
         }
+
+
 
         // 사다리 탐색 (Before)
         for(int start=1; start<=N; start++) {

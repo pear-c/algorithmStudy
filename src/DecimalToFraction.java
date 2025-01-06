@@ -26,6 +26,9 @@ public class DecimalToFraction {
         if(b == 0) return a;
         return gcd(b, a % b);
     }
+    static long lcm(long a, long b) {
+        return a * b / gcd(a, b);
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

@@ -17,7 +17,8 @@ public class Greedy_03 {
 
         for(int i = 1; i < input.length(); i++){
             if(input.charAt(i) != flag){
-                
+                oneCount++;
+
             }
         }
 

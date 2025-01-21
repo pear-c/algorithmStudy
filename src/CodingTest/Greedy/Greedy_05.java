@@ -23,6 +23,6 @@ public class Greedy_05 {
             result += arr[i] * N;
         }
 
-        System.out.println(result);
+        System.out.println(result + " ");
     }
 }

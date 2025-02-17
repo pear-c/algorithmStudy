@@ -44,8 +44,7 @@ public class Impl_06 {
             else if(state == 0) {
                 // 기둥 삭제
                 if(structure == 0) {
-                    vertical[y][x] = false; // 기둥 삭제
-
+                    vertical[y][x] = false;
                     // 모든 기둥과 보가 정상적으로 유지되는지 확인
                     for (int i = 0; i <= n; i++) {
                         for (int j = 0; j <= n; j++) {
@@ -62,8 +61,7 @@ public class Impl_06 {
                 }
                 // 보 삭제
                 else if(structure == 1) {
-                    horizontal[y][x] = false; // 보 삭제
-
+                    horizontal[y][x] = false;
                     // 모든 기둥과 보가 정상적으로 유지되는지 확인
                     for (int i = 0; i <= n; i++) {
                         for (int j = 0; j <= n; j++) {

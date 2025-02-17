@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 // 구현문제 Q.13 - 치킨 배달

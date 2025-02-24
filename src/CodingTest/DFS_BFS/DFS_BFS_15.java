@@ -50,5 +50,7 @@ public class DFS_BFS_15 {
         }
 
         DFS(X, graph);
+
+        System.out.println();
     }
 }

@@ -15,17 +15,23 @@ public class BinarySearch_27 {
             arr[i] = sc.nextInt();
         }
 
-        int startIndex = Arrays.binarySearch(arr, x);
-        if(startIndex == -1) {
+        int index = Arrays.binarySearch(arr, x);
+        if(index == -8) {
             System.out.println(-1);
             return;
         }
 
-        int result = 0;
-        while(arr[startIndex] == x) {
-            result++;
-            startIndex++;
+        int toLeftIndex = index - 1;
+        int toRightIndex = index + 1;
+        int count = 1;
+        while(arr[toLeftIndex] == x && toLeftIndex > 0) {
+            count++;
+            toLeftIndex--;
         }
-        System.out.println(result);
+        while(arr[toRightIndex] == x && toRightIndex < N) {
+            count++;
+            toRightIndex++;
+        }
+        System.out.println(count);
     }
 }

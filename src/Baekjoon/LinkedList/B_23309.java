@@ -1,109 +1,75 @@
 package Baekjoon.LinkedList;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 public class B_23309 {
     static int N, M;
-    static Map<Integer, Node> map = new HashMap<>();
+    static int[] nextStations = new int[1000001];
+    static int[] prevStations = new int[1000001];
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        String[] inputs = br.readLine().split(" ");
+        N = Integer.parseInt(inputs[0]);
+        M = Integer.parseInt(inputs[1]);
 
-        st = new StringTokenizer(br.readLine());
-        int headInt = Integer.parseInt(st.nextToken());
-        Node head = new Node(headInt);
-        map.put(headInt, head);
+        inputs = br.readLine().split(" ");
+        int headStation = Integer.parseInt(inputs[0]);
+        int curStation = headStation;
 
-        Node cur = head;
         for(int i=1; i<N; i++) {
-            int curInt = Integer.parseInt(st.nextToken());
-            Node next = new Node(curInt);
-            cur.next = next;
-            next.prev = cur;
-            map.put(curInt, next);
-            cur = next;
+            int nextStation = Integer.parseInt(inputs[i]);
+
+            nextStations[curStation] = nextStation;
+            prevStations[nextStation] = curStation;
+
+            curStation = nextStation;
         }
-        cur.next = head;
-        head.prev = cur;
+        prevStations[headStation] = curStation;
+        nextStations[curStation] = headStation;
 
         while(M-- > 0) {
-            st = new StringTokenizer(br.readLine());
-            String command = st.nextToken();
-            int i = Integer.parseInt(st.nextToken());
+            inputs = br.readLine().split(" ");
+            String command = inputs[0];
+            int i = Integer.parseInt(inputs[1]);
             if(command.equals("BN")) {
-                int j = Integer.parseInt(st.nextToken());
+                int j = Integer.parseInt(inputs[2]);
 
-                Node newNode = new Node(j);
-                Node curNode = map.get(i);
-                Node nextNode = curNode.next;
+                int originNextStation = nextStations[i];
+                sb.append(originNextStation).append("\n");
 
-                sb.append(nextNode.value).append("\n");
-
-                newNode.next = nextNode;
-                nextNode.prev = newNode;
-
-                curNode.next = newNode;
-                newNode.prev = curNode;
-
-                map.put(j, newNode);
+                nextStations[i] = j;
+                prevStations[j] = i;
+                nextStations[j] = originNextStation;
+                prevStations[originNextStation] = j;
             } else if(command.equals("BP")) {
-                int j = Integer.parseInt(st.nextToken());
+                int j = Integer.parseInt(inputs[2]);
 
-                Node newNode = new Node(j);
-                Node curNode = map.get(i);
-                Node prevNode = curNode.prev;
+                int originPrevStation = prevStations[i];
+                sb.append(originPrevStation).append("\n");
 
-                sb.append(prevNode.value).append("\n");
-
-                prevNode.next = newNode;
-                newNode.prev = prevNode;
-
-                newNode.next = curNode;
-                curNode.prev = newNode;
-
-                map.put(j, newNode);
+                prevStations[i] = j;
+                nextStations[j] = i;
+                prevStations[j] = originPrevStation;
+                nextStations[originPrevStation] = j;
             } else if(command.equals("CP")) {
-                Node curNode = map.get(i);
-                Node prevNode = curNode.prev;
+                int removeStation = prevStations[i];
+                sb.append(removeStation).append("\n");
 
-                sb.append(prevNode.value).append("\n");
-
-                prevNode.prev.next = curNode;
-                curNode.prev = prevNode.prev;
-
-                map.remove(prevNode.value);
+                int grandPrevStation = prevStations[removeStation];
+                nextStations[grandPrevStation] = i;
+                prevStations[i] = grandPrevStation;
             } else if(command.equals("CN")) {
-                Node curNode = map.get(i);
-                Node nextNode = curNode.next;
+                int removeStation = nextStations[i];
+                sb.append(removeStation).append("\n");
 
-                sb.append(nextNode.value).append("\n");
-
-                curNode.next = nextNode.next;
-                nextNode.next.prev = curNode;
-
-                map.remove(nextNode.value);
+                int grandNextStation = nextStations[removeStation];
+                nextStations[i] = grandNextStation;
+                prevStations[grandNextStation] = i;
             }
         }
         System.out.println(sb);
-    }
-
-    static class Node {
-        int value;
-        Node next;
-        Node prev;
-
-        public Node(int value) {
-            this.value = value;
-            this.next = null;
-            this.prev = null;
-        }
     }
 }

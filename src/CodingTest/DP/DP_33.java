@@ -4,32 +4,29 @@ import java.util.Scanner;
 
 // 백준 14501 - 퇴사
 public class DP_33 {
-    static int N;
-    static int[] timeSchedule;
-    static int[] priceSchedule;
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        N = sc.nextInt();
-        timeSchedule = new int[N];
-        priceSchedule = new int[N];
+        int N = sc.nextInt();
+        int[] T = new int[N+1];
+        int[] P = new int[N+1];
+        int[] dp = new int[N+2];
 
-        for(int i=0; i<N; i++) {
-            timeSchedule[i] = sc.nextInt();
-            priceSchedule[i] = sc.nextInt();
+        for(int i=1; i<=N; i++) {
+            T[i] = sc.nextInt();
+            P[i] = sc.nextInt();
         }
 
-        for(int i=0; i<N; i++) {
-            int[] dp = new int[N];
-            dp[i] = priceSchedule[i];
+        for(int i=N; i>=1; i--) {
+            int time = T[i];
+            int pay = P[i];
 
-            int time = 0;
-            int price = 0;
-            while(time < N) {
-
+            if(i + time <= N+1) {
+                dp[i] = Math.max(pay + dp[i+time], dp[i+1]);
+            } else {
+                dp[i] = dp[i+1];
             }
         }
-
+        System.out.println(dp[1]);
     }
 }

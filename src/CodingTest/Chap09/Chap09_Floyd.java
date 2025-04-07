@@ -10,12 +10,13 @@ public class Chap09_Floyd {
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         n = Integer.parseInt(br.readLine()); // 노드 수
         m = Integer.parseInt(br.readLine()); // 간선 수
-        graph = new int[n+1][n+1];  // 그래프 초기화 (초기값 : 무한 / 자기 자신 : 0)
+        // 그래프 초기화 (초기값 : 무한 / 자기 자신 : 0)
+        graph = new int[n+1][n+1];
         for(int i = 1; i <= n; i++){
             for(int j = 1; j <= n; j++){
+                // 자기 자신으로 가는 비용은 0
                 if(i == j)
                     graph[i][j] = 0;
                 else

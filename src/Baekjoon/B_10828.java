@@ -3,14 +3,12 @@ package Baekjoon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class B_10828 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> queue = new ArrayDeque<>();
 
         int N = Integer.parseInt(br.readLine());
         for(int i = 0; i < N; i++) {
@@ -19,28 +17,35 @@ public class B_10828 {
 
             switch(command) {
                 case "push":
-                    stack.push(Integer.parseInt(st.nextToken()));
+                    queue.offer(Integer.parseInt(st.nextToken()));
                     break;
                 case "pop":
-                    if(!stack.isEmpty()) {
-                        System.out.println(stack.pop());
+                    if(!queue.isEmpty()) {
+                        System.out.println(queue.poll());
                     } else {
                         System.out.println("-1");
                     }
                     break;
                 case "size":
-                    System.out.println(stack.size());
+                    System.out.println(queue.size());
                     break;
                 case "empty":
-                    if(stack.isEmpty()) {
+                    if(queue.isEmpty()) {
                         System.out.println("1");
                     } else {
                         System.out.println("0");
                     }
                     break;
-                case "top":
-                    if(!stack.isEmpty()) {
-                        System.out.println(stack.peek());
+                case "front":
+                    if(!queue.isEmpty()) {
+                        System.out.println(queue.peek());
+                    } else {
+                        System.out.println("-1");
+                    }
+                    break;
+                case "back":
+                    if(!queue.isEmpty()) {
+                        System.out.println(queue.peekLast());
                     } else {
                         System.out.println("-1");
                     }

@@ -1,63 +1,59 @@
 package Baekjoon;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
 
-    public static int[] solution(int[] arr) {
-        // 1. 중복 제거 후 정렬
-        Set<Integer> set = new HashSet<>();
-        for(int num : arr){
-            set.add(num);
-        }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-        List<Integer> sorted = new ArrayList<>(set);
-        Collections.sort(sorted);
+        int tc = Integer.parseInt(br.readLine());
 
-        int n = sorted.size();
-        int[] result = new int[n];
+        while(tc-- > 0) {
+            List<int[]> q = new LinkedList<>();
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-        // 2. 지그재그 패턴으로 배치
-        // 패턴: 가운데부터 시작해서 오른쪽, 왼쪽, 오른쪽, 왼쪽... 순서로 배치
+            int n = Integer.parseInt(st.nextToken());
+            int target = Integer.parseInt(st.nextToken());
 
-        int mid = (n - 1) / 2;  // 가운데 인덱스
-        int leftPtr = mid;      // 왼쪽 포인터
-        int rightPtr = mid + 1; // 오른쪽 포인터
+            st = new StringTokenizer(br.readLine());
+            for(int i = 0; i < n; i++) {
+                q.add(new int[] {i, Integer.parseInt(st.nextToken())});
+            }
 
-        // 첫 번째는 가운데 값 (mid 인덱스)
-        result[0] = sorted.get(leftPtr--);
+            int count = 0;
+            while(!q.isEmpty()) {
+                int[] front = q.remove(0);
+                boolean isMax = true;
 
-        // 나머지는 오른쪽, 왼쪽 번갈아가며 배치
-        for(int i = 1; i < n; i++) {
-            if(i % 2 == 1) {
-                // 홀수 인덱스: 오른쪽에서 가져오기
-                if(rightPtr < n) {
-                    result[i] = sorted.get(rightPtr++);
-                } else {
-                    result[i] = sorted.get(leftPtr--);
+                for(int i=0; i<q.size(); i++) {
+                    if(front[1] < q.get(i)[1]) {
+                        q.add(front);
+                        for(int j=0; j<i; j++) {
+                            q.add(q.remove(0));
+                        }
+
+                        isMax = false;
+                        break;
+                    }
                 }
-            } else {
-                // 짝수 인덱스: 왼쪽에서 가져오기
-                if(leftPtr >= 0) {
-                    result[i] = sorted.get(leftPtr--);
-                } else {
-                    result[i] = sorted.get(rightPtr++);
+
+                if(!isMax) {
+                    continue;
+                }
+
+                count++;
+                if(front[0] == target) {
+                    break;
                 }
             }
+
+            sb.append(count).append("\n");
         }
-
-        return result;
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        int[] arr = {
-                3, -2, 8, 5, 3, 9
-        };
-
-        for(int num : solution(arr)){
-            System.out.print(num + " ");
-        }
+        System.out.println(sb);
     }
 }

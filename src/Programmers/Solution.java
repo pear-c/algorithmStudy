@@ -1,35 +1,41 @@
 package Programmers;
 
-import java.util.*;
+
+import java.util.PriorityQueue;
 
 public class Solution {
 
-    public static int solution(int[] priorities, int location) {
-        int answer = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    static PriorityQueue<Integer> pq = new PriorityQueue<>();
+    static int count = 0;
 
-        for(int num : priorities) {
-            pq.offer(num);
+    private static void makeSpicy(PriorityQueue<Integer> pq) {
+        int a = pq.poll();
+        int b = pq.poll();
+
+        pq.add(a + (b*2));
+    }
+
+    public static int solution(int[] scoville, int K) {
+        for(int spice : scoville) {
+            pq.offer(spice);
         }
 
-        while(!pq.isEmpty()) {
-            for(int i=0; i<priorities.length; i++) {
-                if(priorities[i] == pq.peek()) {
-                    pq.poll();
-                    answer++;
-                    if(i == location) {
-                        return answer;
-                    }
-                }
-            }
+        while(pq.size() > 1 && pq.peek() <= K){
+            makeSpicy(pq);
+            count++;
         }
-        return answer;
+
+        if(count == 0 || pq.peek() <= K) {
+            return -1;
+        } else {
+            return count;
+        }
     }
 
     public static void main(String[] args) {
-        int[] priorities = new int[] {1, 1, 9, 1, 1, 1};
-        int location = 0;
+        int[] scoville = new int[] {1, 2, 3, 9, 10, 12};
+        int K = 7;
 
-        System.out.println(solution(priorities, location));
+        System.out.println(solution(scoville, K));
     }
 }

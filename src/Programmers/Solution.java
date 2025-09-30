@@ -1,41 +1,23 @@
 package Programmers;
 
-
-import java.util.PriorityQueue;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution {
-
-    static PriorityQueue<Integer> pq = new PriorityQueue<>();
-    static int count = 0;
-
-    private static void makeSpicy(PriorityQueue<Integer> pq) {
-        int a = pq.poll();
-        int b = pq.poll();
-
-        pq.add(a + (b*2));
-    }
-
-    public static int solution(int[] scoville, int K) {
-        for(int spice : scoville) {
-            pq.offer(spice);
+    public static int[] solution(int[] numbers, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i<numbers.length; i++){
+            int sub = target - numbers[i];
+            if(map.containsKey(sub)) {
+                return new int[]{map.get(sub), i};
+            }
+            map.put(sub, i);
         }
-
-        while(pq.size() > 1 && pq.peek() <= K){
-            makeSpicy(pq);
-            count++;
-        }
-
-        if(count == 0 || pq.peek() <= K) {
-            return -1;
-        } else {
-            return count;
-        }
+        return new int[] {};
     }
 
     public static void main(String[] args) {
-        int[] scoville = new int[] {1, 2, 3, 9, 10, 12};
-        int K = 7;
-
-        System.out.println(solution(scoville, K));
+        int target = 9;
+        int[] numbers = new int[] {3, 30, 30, 5, 9};
     }
 }

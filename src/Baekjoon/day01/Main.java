@@ -1,40 +1,27 @@
 package Baekjoon.day01;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Scanner sc = new Scanner(System.in);
+        Queue<Integer> q = new LinkedList<>();
 
-        int N = Integer.parseInt(br.readLine());
-        A: while(N-- > 0) {
-            Stack<Character> stack = new Stack<>();
-            String input = br.readLine();
-
-            for(int i=0; i<input.length(); i++) {
-                char c = input.charAt(i);
-
-                try {
-                    if(c == '(') {
-                        stack.push(c);
-                    } else {
-                        stack.pop();
-                    }
-                } catch (Exception e) {
-                    System.out.println("NO");
-                    continue A;
-                }
-            }
-
-            if(stack.isEmpty()) {
-                System.out.println("YES");
-            } else {
-                System.out.println("NO");
-            }
+        int N = sc.nextInt();
+        for(int i=1; i<=N; i++) {
+            q.offer(i);
         }
+
+        while(q.size()>1) {
+            q.poll();
+            q.offer(q.poll());
+        }
+
+        System.out.println(q.poll());
     }
 }
